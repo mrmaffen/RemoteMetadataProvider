@@ -13,19 +13,23 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
-package com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners;
+package com.wisdomprogramming.unifiedremotemetadataprovider.media.listeners;
 
 import java.util.List;
 
-import com.woodblockwithoutco.remotemetadataprovider.v18.media.enums.RemoteControlFeature;
+import com.wisdomprogramming.unifiedremotemetadataprovider.media.enums.RemoteControlFeature;
 
 public interface OnRemoteControlFeaturesChangeListener {
+
 	/**
 	 * Called when information about player was changed.
-	 * @param usesFeatures List containing features which are used by player. For example,
-	 * if list contains {@link RemoteControlFeature#USES_FAST_FORWARD} and {@link RemoteControlFeature#USES_REWIND}, then
-	 * the player supports rewinding and fast forwarding.
+	 * 
+	 * @param usesFeatures
+	 *            List containing features which are used by player. For
+	 *            example, if list contains
+	 *            {@link RemoteControlFeature#USES_FAST_FORWARD} and
+	 *            {@link RemoteControlFeature#USES_REWIND}, then the player
+	 *            supports rewinding and fast forwarding.
 	 */
 	public void onFeaturesChanged(List<RemoteControlFeature> usesFeatures);
 }

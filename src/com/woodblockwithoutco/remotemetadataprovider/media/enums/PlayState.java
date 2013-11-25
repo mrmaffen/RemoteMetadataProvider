@@ -13,12 +13,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
-package com.woodblockwithoutco.remotemetadataprovider.v18.media.enums;
+package com.wisdomprogramming.unifiedremotemetadataprovider.media.enums;
 
 public enum PlayState {
-	BUFFERING, 
-	ERROR, 
+	BUFFERING,
+	ERROR,
 	FAST_FORWARDING,
 	PAUSED,
 	PLAYING,

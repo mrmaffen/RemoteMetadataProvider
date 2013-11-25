@@ -13,15 +13,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.v18.media;
+package com.wisdomprogramming.unifiedremotemetadataprovider.media;
 
-import com.woodblockwithoutco.remotemetadataprovider.v18.internal.MetadataUpdaterCallback;
-import com.woodblockwithoutco.remotemetadataprovider.v18.internal.RemoteControlDisplay;
-import com.woodblockwithoutco.remotemetadataprovider.v18.media.enums.MediaCommand;
-import com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners.OnArtworkChangeListener;
-import com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners.OnMetadataChangeListener;
-import com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners.OnPlaybackStateChangeListener;
-import com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners.OnRemoteControlFeaturesChangeListener;
+import com.wisdomprogramming.unifiedremotemetadataprovider.internal.MetadataUpdaterCallback;
+import com.wisdomprogramming.unifiedremotemetadataprovider.internal.RemoteControlDisplay;
+import com.wisdomprogramming.unifiedremotemetadataprovider.media.enums.MediaCommand;
+import com.wisdomprogramming.unifiedremotemetadataprovider.media.listeners.OnArtworkChangeListener;
+import com.wisdomprogramming.unifiedremotemetadataprovider.media.listeners.OnMetadataChangeListener;
+import com.wisdomprogramming.unifiedremotemetadataprovider.media.listeners.OnPlaybackStateChangeListener;
+import com.wisdomprogramming.unifiedremotemetadataprovider.media.listeners.OnRemoteControlFeaturesChangeListener;
 
 import android.app.PendingIntent;
 import android.app.PendingIntent.CanceledException;
@@ -74,15 +74,6 @@ public final class RemoteMetadataProvider {
 	 * @return Active instance of RemoteMetadataProvider.
 	 */
 	public static synchronized RemoteMetadataProvider getInstance(Context context) {
-		/*
-		 * This version of library supports only Android 4.3. At some point it
-		 * will throw AbstractMethodError with weird message, so, to prevent
-		 * this we will throw our own RuntimeException with human-readable
-		 * message.
-		 */
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
-			throw new RuntimeException("Unsupported API level! Minimum supported API level is " + Build.VERSION_CODES.JELLY_BEAN_MR2);
-		}
 		if (INSTANCE == null) {
 			INSTANCE = new RemoteMetadataProvider(context);
 		}
@@ -92,11 +83,7 @@ public final class RemoteMetadataProvider {
 	/**
 	 * Acquires remote media controls. This method MUST be called whenever your
 	 * View displaying metadata is shown or else you will not receive metadata
-	 * updates and probably you won't be able to send media commands. Please
-	 * note that by calling this method you will not receive artwork updates;
-	 * instead, you should use
-	 * {@link RemoteMetadataProvider#acquireRemoteControls(int, int)} if you
-	 * want to receive artwork updates.
+	 * updates and probably you won't be able to send media commands.
 	 */
 	public void acquireRemoteControls() {
 		if (mAudioManager != null) {
@@ -162,7 +149,7 @@ public final class RemoteMetadataProvider {
 			Log.w(TAG, "Failed to get instance of AudioManager while acquiring remote media controls");
 		}
 	}
-
+	
 	/**
 	 * Drops remote media controls. This method MUST be called whenever your
 	 * View displaying metadata is hidden or else you may block other
@@ -475,7 +462,7 @@ public final class RemoteMetadataProvider {
 	public void setOnRemoteControlFeaturesChangeListener(OnRemoteControlFeaturesChangeListener l) {
 		mFeaturesListener = l;
 	}
-
+	
 	/**
 	 * Tells client to notify/stop notifying RemoteMetadataProvider whenever
 	 * it's playback position was changed.

@@ -13,18 +13,20 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+package com.wisdomprogramming.unifiedremotemetadataprovider.media.listeners;
 
-package com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners;
-
-import com.woodblockwithoutco.remotemetadataprovider.v18.media.enums.PlayState;
+import com.wisdomprogramming.unifiedremotemetadataprovider.media.enums.PlayState;
 
 public interface OnPlaybackStateChangeListener {
+
 	/**
-	 * Called when playback state was changed. For example, this method will be called with parameter {@link PlayState#PAUSED}
-	 * when playback is paused.
-	 * @param playbackState Possible values of playbackState are listed in enum class PlayState
-	 * @param playbackPosition Current playback position in ms.
-	 * @param speed Playback speed. 1.0f is normal, 2.0f is 2x speed etc.
+	 * Called when playback state was changed. For example, this method will be
+	 * called with parameter {@link PlayState#PAUSED} when playback is paused.
+	 * 
+	 * @param playbackState
+	 *            Possible values of playbackState are listed in enum class
+	 *            PlayState
 	 */
+	public void onPlaybackStateChanged(PlayState playbackState);
 	public void onPlaybackStateChanged(PlayState playbackState, long playbackPosition, float speed);
 }

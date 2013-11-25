@@ -13,14 +13,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.v18.internal;
+package com.wisdomprogramming.unifiedremotemetadataprovider.internal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.woodblockwithoutco.remotemetadataprovider.v18.media.RemoteMetadataProvider;
-import com.woodblockwithoutco.remotemetadataprovider.v18.media.enums.PlayState;
-import com.woodblockwithoutco.remotemetadataprovider.v18.media.enums.RemoteControlFeature;
+import com.wisdomprogramming.unifiedremotemetadataprovider.media.RemoteMetadataProvider;
+import com.wisdomprogramming.unifiedremotemetadataprovider.media.enums.PlayState;
+import com.wisdomprogramming.unifiedremotemetadataprovider.media.enums.RemoteControlFeature;
 
 import android.app.PendingIntent;
 import android.graphics.Bitmap;
@@ -85,7 +85,7 @@ public class MetadataUpdaterCallback implements Handler.Callback {
 			if (mGenerationId == msg.arg1) {
 				if (mMetadataProvider.getOnRemoteControlFlagsChangeListener() != null) {
 					int flags = msg.arg2;
-					int posCapabilities = (Integer) msg.obj;
+					if (Build.VERSION.SDK_INT < 17) 
 					mFeatureList.clear();
 					if ((flags | RemoteControlClient.FLAG_KEY_MEDIA_FAST_FORWARD) == flags) mFeatureList.add(RemoteControlFeature.USES_FAST_FORWARD);
 					if ((flags | RemoteControlClient.FLAG_KEY_MEDIA_NEXT) == flags) mFeatureList.add(RemoteControlFeature.USES_NEXT);
@@ -95,9 +95,13 @@ public class MetadataUpdaterCallback implements Handler.Callback {
 					if ((flags | RemoteControlClient.FLAG_KEY_MEDIA_PREVIOUS) == flags) mFeatureList.add(RemoteControlFeature.USES_PREVIOUS);
 					if ((flags | RemoteControlClient.FLAG_KEY_MEDIA_REWIND) == flags) mFeatureList.add(RemoteControlFeature.USES_REWIND);
 					if ((flags | RemoteControlClient.FLAG_KEY_MEDIA_STOP) == flags) mFeatureList.add(RemoteControlFeature.USES_STOP);
-					if ((flags | RemoteControlClient.FLAG_KEY_MEDIA_POSITION_UPDATE) == flags) mFeatureList.add(RemoteControlFeature.USES_POSITIONING);
-					if ((posCapabilities | RemoteControlClient.MEDIA_POSITION_WRITABLE) == posCapabilities) mFeatureList.add(RemoteControlFeature.USES_WRITABLE_POSITIONING);
-					if ((posCapabilities | RemoteControlClient.MEDIA_POSITION_READABLE) == posCapabilities) mFeatureList.add(RemoteControlFeature.USES_READABLE_POSITIONING);
+					if (Build.VERSION.SDK_INT < 17){
+						int posCapabilities = (Integer) msg.obj;
+						if ((flags | RemoteControlClient.FLAG_KEY_MEDIA_POSITION_UPDATE) == flags) mFeatureList.add(RemoteControlFeature.USES_POSITIONING);
+						if ((posCapabilities | RemoteControlClient.MEDIA_POSITION_WRITABLE) == posCapabilities) mFeatureList.add(RemoteControlFeature.USES_WRITABLE_POSITIONING);
+						if ((posCapabilities | RemoteControlClient.MEDIA_POSITION_READABLE) == posCapabilities) mFeatureList.add(RemoteControlFeature.USES_READABLE_POSITIONING);
+						mMetadataProvider.getOnRemoteControlFlagsChangeListener().onFeaturesChanged(mFeatureList);
+					}
 					mMetadataProvider.getOnRemoteControlFlagsChangeListener().onFeaturesChanged(mFeatureList);
 				}
 			}
@@ -116,36 +120,65 @@ public class MetadataUpdaterCallback implements Handler.Callback {
 		case RemoteControlDisplay.MSG_UPDATE_STATE:
 			if (mGenerationId == msg.arg1) {
 				if (mMetadataProvider.getOnPlaybackStateChangeListener() != null) {
-					float speed = ((Bundle) msg.obj).getFloat("speed");
-					long position = ((Bundle) msg.obj).getLong("position");
-					switch (msg.arg2) {
-					case RemoteControlClient.PLAYSTATE_BUFFERING:
-						mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.BUFFERING, position, speed);
-						break;
-					case RemoteControlClient.PLAYSTATE_ERROR:
-						mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.ERROR, position, speed);
-						break;
-					case RemoteControlClient.PLAYSTATE_FAST_FORWARDING:
-						mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.FAST_FORWARDING, position, speed);
-						break;
-					case RemoteControlClient.PLAYSTATE_PAUSED:
-						mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.PAUSED, position, speed);
-						break;
-					case RemoteControlClient.PLAYSTATE_PLAYING:
-						mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.PLAYING, position, speed);
-						break;
-					case RemoteControlClient.PLAYSTATE_REWINDING:
-						mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.REWINDING, position, speed);
-						break;
-					case RemoteControlClient.PLAYSTATE_SKIPPING_BACKWARDS:
-						mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.SKIPPING_BACKWARDS, position, speed);
-						break;
-					case RemoteControlClient.PLAYSTATE_SKIPPING_FORWARDS:
-						mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.SKIPPING_FORWARDS, position, speed);
-						break;
-					case RemoteControlClient.PLAYSTATE_STOPPED:
-						mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.STOPPED, position, speed);
-						break;
+					if (Build.VERSION.SDK_INT < 17){
+						float speed = ((Bundle) msg.obj).getFloat("speed");
+						long position = ((Bundle) msg.obj).getLong("position");
+						switch (msg.arg2) {
+						case RemoteControlClient.PLAYSTATE_BUFFERING:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.BUFFERING, position, speed);
+							break;
+						case RemoteControlClient.PLAYSTATE_ERROR:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.ERROR, position, speed);
+							break;
+						case RemoteControlClient.PLAYSTATE_FAST_FORWARDING:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.FAST_FORWARDING, position, speed);
+							break;
+						case RemoteControlClient.PLAYSTATE_PAUSED:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.PAUSED, position, speed);
+							break;
+						case RemoteControlClient.PLAYSTATE_PLAYING:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.PLAYING, position, speed);
+							break;
+						case RemoteControlClient.PLAYSTATE_REWINDING:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.REWINDING, position, speed);
+							break;
+						case RemoteControlClient.PLAYSTATE_SKIPPING_BACKWARDS:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.SKIPPING_BACKWARDS, position, speed);
+							break;
+						case RemoteControlClient.PLAYSTATE_SKIPPING_FORWARDS:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.SKIPPING_FORWARDS, position, speed);
+							break;
+						}
+					} else {
+						switch (msg.arg2) {
+						case RemoteControlClient.PLAYSTATE_BUFFERING:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.BUFFERING);
+							break;
+						case RemoteControlClient.PLAYSTATE_ERROR:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.ERROR);
+							break;
+						case RemoteControlClient.PLAYSTATE_FAST_FORWARDING:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.FAST_FORWARDING);
+							break;
+						case RemoteControlClient.PLAYSTATE_PAUSED:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.PAUSED);
+							break;
+						case RemoteControlClient.PLAYSTATE_PLAYING:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.PLAYING);
+							break;
+						case RemoteControlClient.PLAYSTATE_REWINDING:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.REWINDING);
+							break;
+						case RemoteControlClient.PLAYSTATE_SKIPPING_BACKWARDS:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.SKIPPING_BACKWARDS);
+							break;
+						case RemoteControlClient.PLAYSTATE_SKIPPING_FORWARDS:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.SKIPPING_FORWARDS);
+							break;
+						case RemoteControlClient.PLAYSTATE_STOPPED:
+							mMetadataProvider.getOnPlaybackStateChangeListener().onPlaybackStateChanged(PlayState.STOPPED);
+							break;
+						}
 					}
 				}
 			}

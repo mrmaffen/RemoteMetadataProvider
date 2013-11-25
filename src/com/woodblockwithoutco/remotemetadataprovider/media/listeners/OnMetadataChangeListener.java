@@ -13,18 +13,28 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
-package com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners;
+package com.wisdomprogramming.unifiedremotemetadataprovider.media.listeners;
 
 public interface OnMetadataChangeListener {
-	
+
 	/**
 	 * Called when remote metadata was updated.
-	 * @param artist Artist of current song. May be null if wasn't specified by player. Some players use albumArtist parameter instead.
-	 * @param title Title of current song.  May be null if wasn't specified by player.
-	 * @param album Current song album title.  May be null if wasn't specified by player.
-	 * @param albumArtist Current song album artist.  May be null if wasn't specified by player. Some players use this parameter instead of artist parameter.
-	 * @param duration Song duration in milliseconds.
+	 * 
+	 * @param artist
+	 *            Artist of current song. May be null if wasn't specified by
+	 *            player. Some players use albumArtist parameter instead.
+	 * @param title
+	 *            Title of current song. May be null if wasn't specified by
+	 *            player.
+	 * @param album
+	 *            Current song album title. May be null if wasn't specified by
+	 *            player.
+	 * @param albumArtist
+	 *            Current song album artist. May be null if wasn't specified by
+	 *            player. Some players use this parameter instead of artist
+	 *            parameter.
+	 * @param duration
+	 *            Song duration in milliseconds.
 	 */
 	public void onMetadataChanged(String artist, String title, String album, String albumArtist, long duration);
 }
