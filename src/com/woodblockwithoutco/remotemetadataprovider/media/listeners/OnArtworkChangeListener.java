@@ -13,19 +13,18 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.media.listeners;
+
+package com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners;
 
 import android.graphics.Bitmap;
 
 public interface OnArtworkChangeListener {
-
+	
 	/**
 	 * Called when artwork of current song album was updated.
-	 * 
-	 * @param artwork
-	 *            Bitmap containing current artwork. May be null if it wasn't
-	 *            specified by player. Please note that previous Bitmap is
-	 *            recycled after artwork update!
+	 * @param artwork Bitmap containing current artwork. May be null if it wasn't specified by player.
+	 * Please note that previous Bitmap is recycled after artwork update!
 	 */
 	public void onArtworkChanged(Bitmap artwork);
+
 }

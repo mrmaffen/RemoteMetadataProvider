@@ -13,8 +13,16 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.media.enums;
+
+package com.woodblockwithoutco.remotemetadataprovider.v18.media.enums;
 
 public enum MediaCommand {
-	NEXT, PREVIOUS, PLAY, PAUSE, PLAY_PAUSE, REWIND, FAST_FORWARD, STOP
+	NEXT,
+	PREVIOUS,
+	PLAY,
+	PAUSE,
+	PLAY_PAUSE,
+	REWIND,
+	FAST_FORWARD,
+	STOP
 }

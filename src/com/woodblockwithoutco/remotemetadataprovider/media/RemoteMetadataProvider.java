@@ -13,15 +13,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.media;
+package com.woodblockwithoutco.remotemetadataprovider.v18.media;
 
-import com.woodblockwithoutco.remotemetadataprovider.internal.MetadataUpdaterCallback;
-import com.woodblockwithoutco.remotemetadataprovider.internal.RemoteControlDisplay;
-import com.woodblockwithoutco.remotemetadataprovider.media.enums.MediaCommand;
-import com.woodblockwithoutco.remotemetadataprovider.media.listeners.OnArtworkChangeListener;
-import com.woodblockwithoutco.remotemetadataprovider.media.listeners.OnMetadataChangeListener;
-import com.woodblockwithoutco.remotemetadataprovider.media.listeners.OnPlaybackStateChangeListener;
-import com.woodblockwithoutco.remotemetadataprovider.media.listeners.OnRemoteControlFeaturesChangeListener;
+import com.woodblockwithoutco.remotemetadataprovider.v18.internal.MetadataUpdaterCallback;
+import com.woodblockwithoutco.remotemetadataprovider.v18.internal.RemoteControlDisplay;
+import com.woodblockwithoutco.remotemetadataprovider.v18.media.enums.MediaCommand;
+import com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners.OnArtworkChangeListener;
+import com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners.OnMetadataChangeListener;
+import com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners.OnPlaybackStateChangeListener;
+import com.woodblockwithoutco.remotemetadataprovider.v18.media.listeners.OnRemoteControlFeaturesChangeListener;
 
 import android.app.PendingIntent;
 import android.app.PendingIntent.CanceledException;
@@ -51,8 +51,11 @@ public final class RemoteMetadataProvider {
 	private OnMetadataChangeListener mMetadataListener;
 	private MetadataUpdaterCallback mMetadataUpdaterCallback;
 	private OnPlaybackStateChangeListener mPlaystateListener;
+	private boolean mRegisterPlaybackPositionSync=false;
 	private RemoteControlDisplay mRemoteControlDisplay;
 	private boolean mShouldUpdateHandler;
+	private boolean mUnregisterPlaybackPositionSync=false;
+	private boolean mUpdatePositionSyncSettings=false;
 
 	/*
 	 * Constructor should be private as we don't want multiple instances.
@@ -72,13 +75,13 @@ public final class RemoteMetadataProvider {
 	 */
 	public static synchronized RemoteMetadataProvider getInstance(Context context) {
 		/*
-		 * This version of library supports versions only from Android 4.0.3 to
-		 * Android 4.2.2. So, if we detect wrong API version, we throw an
-		 * Exception with human-readable message instead of info-lacking
-		 * exception.
+		 * This version of library supports only Android 4.3. At some point it
+		 * will throw AbstractMethodError with weird message, so, to prevent
+		 * this we will throw our own RuntimeException with human-readable
+		 * message.
 		 */
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
-			throw new RuntimeException("Unsupported API level! Maximum supported API level is " + Build.VERSION_CODES.JELLY_BEAN_MR1);
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+			throw new RuntimeException("Unsupported API level! Minimum supported API level is " + Build.VERSION_CODES.JELLY_BEAN_MR2);
 		}
 		if (INSTANCE == null) {
 			INSTANCE = new RemoteMetadataProvider(context);
@@ -89,7 +92,11 @@ public final class RemoteMetadataProvider {
 	/**
 	 * Acquires remote media controls. This method MUST be called whenever your
 	 * View displaying metadata is shown or else you will not receive metadata
-	 * updates and probably you won't be able to send media commands.
+	 * updates and probably you won't be able to send media commands. Please
+	 * note that by calling this method you will not receive artwork updates;
+	 * instead, you should use
+	 * {@link RemoteMetadataProvider#acquireRemoteControls(int, int)} if you
+	 * want to receive artwork updates.
 	 */
 	public void acquireRemoteControls() {
 		if (mAudioManager != null) {
@@ -111,6 +118,46 @@ public final class RemoteMetadataProvider {
 			}
 			// registering our RemoteControlDisplay
 			mAudioManager.registerRemoteControlDisplay(mRemoteControlDisplay);
+			if(mUpdatePositionSyncSettings) {
+				if(mRegisterPlaybackPositionSync) setPlaybackPositionSyncEnabled(true);
+				if(mUnregisterPlaybackPositionSync) setPlaybackPositionSyncEnabled(false);
+				mUpdatePositionSyncSettings=false;
+			}
+		} else {
+			Log.w(TAG, "Failed to get instance of AudioManager while acquiring remote media controls");
+		}
+	}
+
+	/**
+	 * Acquires remote media controls. This method MUST be called whenever your
+	 * View displaying metadata is shown or else you will not receive metadata
+	 * updates and probably you won't be able to send media commands.
+	 * 
+	 * @param maxWidth
+	 *            Maximum expected width of artwork Bitmap.
+	 * @param maxHeight
+	 *            Maximum expected height of artwork Bitmap.
+	 */
+	public void acquireRemoteControls(int maxWidth, int maxHeight) {
+		if (mAudioManager != null) {
+			// if we don't have any RemoteControlDisplay or we have to update
+			// our Handler
+			if (mRemoteControlDisplay == null || mShouldUpdateHandler) {
+				if (mMetadataUpdaterCallback == null) mMetadataUpdaterCallback = new MetadataUpdaterCallback(INSTANCE);
+				// if we don't have any Handler or we should update it.
+				if (mHandler == null || mShouldUpdateHandler) {
+					if (mIsLooperUsed) {
+						mHandler = new Handler(mLooper, mMetadataUpdaterCallback);
+					} else {
+						mHandler = new Handler(mMetadataUpdaterCallback);
+						mLooper = null;
+					}
+				}
+				mRemoteControlDisplay = new RemoteControlDisplay(mHandler);
+				mShouldUpdateHandler = false;
+			}
+			// registering our RemoteControlDisplay
+			mAudioManager.registerRemoteControlDisplay(mRemoteControlDisplay, maxWidth, maxHeight);
 		} else {
 			Log.w(TAG, "Failed to get instance of AudioManager while acquiring remote media controls");
 		}
@@ -427,5 +474,32 @@ public final class RemoteMetadataProvider {
 	 */
 	public void setOnRemoteControlFeaturesChangeListener(OnRemoteControlFeaturesChangeListener l) {
 		mFeaturesListener = l;
+	}
+
+	/**
+	 * Tells client to notify/stop notifying RemoteMetadataProvider whenever
+	 * it's playback position was changed.
+	 * 
+	 * @param isEnabled
+	 *            True if we want to receive playback updates, false otherwise.
+	 */
+	public void setPlaybackPositionSyncEnabled(boolean isEnabled) {
+		if (mAudioManager != null) {
+			if(mRemoteControlDisplay!=null) {
+				mAudioManager.remoteControlDisplayWantsPlaybackPositionSync(mRemoteControlDisplay, isEnabled);
+			} else {
+				if(isEnabled) {
+					mRegisterPlaybackPositionSync=true;
+					mUnregisterPlaybackPositionSync=false;
+					mUpdatePositionSyncSettings=true;
+				} else {
+					mRegisterPlaybackPositionSync=false;
+					mUnregisterPlaybackPositionSync=true;
+					mUpdatePositionSyncSettings=true;
+				}
+			}
+		} else {
+			Log.w(TAG, "Failed to get instance of AudioManager while requesting position update");
+		}
 	}
 }
