@@ -13,9 +13,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.wisdomprogramming.unifiedremotemetadataprovider.media.listeners;
+package com.woodblockwithoutco.remotemetadataprovider.media.listeners;
 
-import com.wisdomprogramming.unifiedremotemetadataprovider.media.enums.PlayState;
+import com.woodblockwithoutco.remotemetadataprovider.media.enums.PlayState;
 
 public interface OnPlaybackStateChangeListener {
 
@@ -28,5 +28,4 @@ public interface OnPlaybackStateChangeListener {
 	 *            PlayState
 	 */
 	public void onPlaybackStateChanged(PlayState playbackState);
-	public void onPlaybackStateChanged(PlayState playbackState, long playbackPosition, float speed);
 }

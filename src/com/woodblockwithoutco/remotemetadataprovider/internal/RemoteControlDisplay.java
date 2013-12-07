@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.wisdomprogramming.unifiedremotemetadataprovider.internal;
+package com.woodblockwithoutco.remotemetadataprovider.internal;
 
 import java.lang.ref.WeakReference;
 
@@ -44,8 +44,7 @@ public class RemoteControlDisplay extends IRemoteControlDisplay.Stub {
 	public RemoteControlDisplay(Handler handler) {
 		mLocalHandler = new WeakReference<Handler>(handler);
 	}
-	
-	@Override
+
 	public void setAllMetadata(int generationId, Bundle metadata, Bitmap bitmap) {
 		Handler handler = mLocalHandler.get();
 		if (handler != null) {
@@ -53,16 +52,14 @@ public class RemoteControlDisplay extends IRemoteControlDisplay.Stub {
 			handler.obtainMessage(MSG_SET_ARTWORK, generationId, 0, bitmap).sendToTarget();
 		}
 	}
-	
-	@Override
+
 	public void setArtwork(int generationId, Bitmap bitmap) {
 		Handler handler = mLocalHandler.get();
 		if (handler != null) {
 			handler.obtainMessage(MSG_SET_ARTWORK, generationId, 0, bitmap).sendToTarget();
 		}
 	}
-	
-	@Override
+
 	public void setCurrentClientId(int clientGeneration, PendingIntent mediaIntent, boolean clearing) throws RemoteException {
 		Handler handler = mLocalHandler.get();
 		if (handler != null) {
@@ -70,7 +67,6 @@ public class RemoteControlDisplay extends IRemoteControlDisplay.Stub {
 		}
 	}
 
-	@Override
 	public void setMetadata(int generationId, Bundle metadata) {
 		Handler handler = mLocalHandler.get();
 		if (handler != null) {
@@ -84,30 +80,11 @@ public class RemoteControlDisplay extends IRemoteControlDisplay.Stub {
 			handler.obtainMessage(MSG_UPDATE_STATE, generationId, state).sendToTarget();
 		}
 	}
-	
-	@Override
-	public void setPlaybackState(int generationId, int state, long stateChangeTimeMs, long currentPosMs, float speed) {
-		Handler handler = mLocalHandler.get();
-		if (handler != null) {
-			Bundle infoBundle = new Bundle();
-			infoBundle.putFloat("speed", speed);
-			infoBundle.putLong("position", currentPosMs);
-			handler.obtainMessage(MSG_UPDATE_STATE, generationId, state, infoBundle).sendToTarget();
-		}
-	}
 
 	public void setTransportControlFlags(int generationId, int flags) {
 		Handler handler = mLocalHandler.get();
 		if (handler != null) {
 			handler.obtainMessage(MSG_SET_TRANSPORT_CONTROLS, generationId, flags).sendToTarget();
-		}
-	}
-	
-	@Override
-	public void setTransportControlInfo(int generationId, int flags, int posCapabilities) {
-		Handler handler = mLocalHandler.get();
-		if (handler != null) {
-			handler.obtainMessage(MSG_SET_TRANSPORT_CONTROLS, generationId, flags, posCapabilities).sendToTarget();
 		}
 	}
 }

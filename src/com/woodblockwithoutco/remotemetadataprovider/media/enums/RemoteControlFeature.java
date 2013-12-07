@@ -13,18 +13,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.wisdomprogramming.unifiedremotemetadataprovider.media.enums;
+package com.woodblockwithoutco.remotemetadataprovider.media.enums;
 
 public enum RemoteControlFeature {
-	USES_FAST_FORWARD,
-	USES_NEXT,
-	USES_PAUSE,
-	USES_PLAY,
-	USES_PLAY_PAUSE,
-	USES_PREVIOUS,
-	USES_REWIND,
-	USES_STOP,
-	USES_POSITIONING,
-	USES_WRITABLE_POSITIONING,
-	USES_READABLE_POSITIONING
+	USES_FAST_FORWARD, USES_NEXT, USES_PAUSE, USES_PLAY, USES_PLAY_PAUSE, USES_PREVIOUS, USES_REWIND, USES_STOP
 }
