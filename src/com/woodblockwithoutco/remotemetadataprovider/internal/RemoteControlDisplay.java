@@ -33,6 +33,7 @@ public class RemoteControlDisplay extends IRemoteControlDisplay.Stub {
 	public static final int MSG_SET_GENERATION_ID = 103;
 	public static final int MSG_SET_METADATA = 101;
 	public static final int MSG_SET_TRANSPORT_CONTROLS = 102;
+	private static final int MSG_SET_TRANSPORT_ID = 105;
 	public static final int MSG_UPDATE_STATE = 100;
 	public static final int MSG_SET_ARTWORK = 104;
 	/*
@@ -49,13 +50,15 @@ public class RemoteControlDisplay extends IRemoteControlDisplay.Stub {
 		Handler handler = mLocalHandler.get();
 		if (handler != null) {
 			handler.obtainMessage(MSG_SET_METADATA, generationId, 0, metadata).sendToTarget();
-			handler.obtainMessage(MSG_SET_ARTWORK, generationId, 0, bitmap).sendToTarget();
+			if ((bitmap != null) && (bitmap.getHeight() > 0)) {
+				handler.obtainMessage(MSG_SET_ARTWORK, generationId, 0, bitmap).sendToTarget();
+			}
 		}
 	}
 
 	public void setArtwork(int generationId, Bitmap bitmap) {
 		Handler handler = mLocalHandler.get();
-		if (handler != null) {
+		if ((handler != null) && (bitmap != null) && (bitmap.getHeight() > 0)) {
 			handler.obtainMessage(MSG_SET_ARTWORK, generationId, 0, bitmap).sendToTarget();
 		}
 	}
@@ -80,11 +83,25 @@ public class RemoteControlDisplay extends IRemoteControlDisplay.Stub {
 			handler.obtainMessage(MSG_UPDATE_STATE, generationId, state).sendToTarget();
 		}
 	}
+	
+	public void setPlaybackState(int generationId, int state, long stateChangeTimeMs, long currentPosMs, float speed) {
+		Handler handler = mLocalHandler.get();
+		if (handler != null) {
+			handler.obtainMessage(MSG_UPDATE_STATE, generationId, state).sendToTarget();
+		}
+	}
 
 	public void setTransportControlFlags(int generationId, int flags) {
 		Handler handler = mLocalHandler.get();
 		if (handler != null) {
 			handler.obtainMessage(MSG_SET_TRANSPORT_CONTROLS, generationId, flags).sendToTarget();
+		}
+	}
+	
+	public void setTransportControlInfo(int generationId, int flags, int posCapabilities) {
+		Handler handler = mLocalHandler.get();
+		if (handler != null) {
+			handler.obtainMessage(MSG_SET_TRANSPORT_ID, generationId, Integer.valueOf(flags)).sendToTarget();
 		}
 	}
 }
