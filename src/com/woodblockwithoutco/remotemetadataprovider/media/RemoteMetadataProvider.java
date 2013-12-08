@@ -36,7 +36,6 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 
-@SuppressWarnings("unused")
 public final class RemoteMetadataProvider {
 
 	private static RemoteMetadataProvider INSTANCE;
@@ -78,9 +77,9 @@ public final class RemoteMetadataProvider {
 		 * Exception with human-readable message instead of info-lacking
 		 * exception.
 		 */
-//		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//			throw new RuntimeException("Unsupported API level! Maximum supported API level is " + Build.VERSION_CODES.JELLY_BEAN_MR1);
-//		}
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			throw new RuntimeException("Unsupported API level! Maximum supported API level is " + Build.VERSION_CODES.JELLY_BEAN_MR1);
+		}
 		if (INSTANCE == null) {
 			INSTANCE = new RemoteMetadataProvider(context);
 		}
