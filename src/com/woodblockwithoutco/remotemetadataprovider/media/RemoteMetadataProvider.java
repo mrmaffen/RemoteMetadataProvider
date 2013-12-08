@@ -115,6 +115,41 @@ public final class RemoteMetadataProvider {
 			Log.w(TAG, "Failed to get instance of AudioManager while acquiring remote media controls");
 		}
 	}
+	
+	/**
+	 * Acquires remote media controls. This method MUST be called whenever your
+	 * View displaying metadata is shown or else you will not receive metadata
+	 * updates and probably you won't be able to send media commands.
+	 * 
+	 * @param maxWidth
+	 *            Maximum expected width of artwork Bitmap.
+	 * @param maxHeight
+	 *            Maximum expected height of artwork Bitmap.
+	 */
+	public void acquireRemoteControls(int maxWidth, int maxHeight) {
+		if (mAudioManager != null) {
+			// if we don't have any RemoteControlDisplay or we have to update
+			// our Handler
+			if (mRemoteControlDisplay == null || mShouldUpdateHandler) {
+				if (mMetadataUpdaterCallback == null) mMetadataUpdaterCallback = new MetadataUpdaterCallback(INSTANCE);
+				// if we don't have any Handler or we should update it.
+				if (mHandler == null || mShouldUpdateHandler) {
+					if (mIsLooperUsed) {
+						mHandler = new Handler(mLooper, mMetadataUpdaterCallback);
+					} else {
+						mHandler = new Handler(mMetadataUpdaterCallback);
+						mLooper = null;
+					}
+				}
+				mRemoteControlDisplay = new RemoteControlDisplay(mHandler);
+				mShouldUpdateHandler = false;
+			}
+			// registering our RemoteControlDisplay
+			mAudioManager.registerRemoteControlDisplay(mRemoteControlDisplay, maxWidth, maxHeight);
+		} else {
+			Log.w(TAG, "Failed to get instance of AudioManager while acquiring remote media controls");
+		}
+	}
 
 	/**
 	 * Drops remote media controls. This method MUST be called whenever your
