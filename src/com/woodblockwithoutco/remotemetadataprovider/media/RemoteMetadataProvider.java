@@ -53,6 +53,9 @@ public final class RemoteMetadataProvider {
 	private OnPlaybackStateChangeListener mPlaystateListener;
 	private RemoteControlDisplay mRemoteControlDisplay;
 	private boolean mShouldUpdateHandler;
+	private boolean mRegisterPlaybackPositionSync=false;
+	private boolean mUnregisterPlaybackPositionSync=false;
+	private boolean mUpdatePositionSyncSettings=false;
 
 	/*
 	 * Constructor should be private as we don't want multiple instances.
@@ -111,6 +114,11 @@ public final class RemoteMetadataProvider {
 			}
 			// registering our RemoteControlDisplay
 			mAudioManager.registerRemoteControlDisplay(mRemoteControlDisplay);
+			if(mUpdatePositionSyncSettings) {
+				if(mRegisterPlaybackPositionSync) setPlaybackPositionSyncEnabled(true);
+				if(mUnregisterPlaybackPositionSync) setPlaybackPositionSyncEnabled(false);
+				mUpdatePositionSyncSettings=false;
+			}
 		} else {
 			Log.w(TAG, "Failed to get instance of AudioManager while acquiring remote media controls");
 		}
@@ -462,5 +470,32 @@ public final class RemoteMetadataProvider {
 	 */
 	public void setOnRemoteControlFeaturesChangeListener(OnRemoteControlFeaturesChangeListener l) {
 		mFeaturesListener = l;
+	}
+	
+	/**
+	 * Tells client to notify/stop notifying RemoteMetadataProvider whenever
+	 * it's playback position was changed.
+	 * 
+	 * @param isEnabled
+	 *            True if we want to receive playback updates, false otherwise.
+	 */
+	public void setPlaybackPositionSyncEnabled(boolean isEnabled) {
+		if (mAudioManager != null) {
+			if(mRemoteControlDisplay!=null) {
+				mAudioManager.remoteControlDisplayWantsPlaybackPositionSync(mRemoteControlDisplay, isEnabled);
+			} else {
+				if(isEnabled) {
+					mRegisterPlaybackPositionSync=true;
+					mUnregisterPlaybackPositionSync=false;
+					mUpdatePositionSyncSettings=true;
+				} else {
+					mRegisterPlaybackPositionSync=false;
+					mUnregisterPlaybackPositionSync=true;
+					mUpdatePositionSyncSettings=true;
+				}
+			}
+		} else {
+			Log.w(TAG, "Failed to get instance of AudioManager while requesting position update");
+		}
 	}
 }
