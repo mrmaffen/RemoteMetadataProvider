@@ -74,15 +74,7 @@ public final class RemoteMetadataProvider {
 	 * @return Active instance of RemoteMetadataProvider.
 	 */
 	public static synchronized RemoteMetadataProvider getInstance(Context context) {
-		/*
-		 * This version of library supports versions only from Android 4.0.3 to
-		 * Android 4.2.2. So, if we detect wrong API version, we throw an
-		 * Exception with human-readable message instead of info-lacking
-		 * exception.
-		 */
-//		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//			throw new RuntimeException("Unsupported API level! Maximum supported API level is " + Build.VERSION_CODES.JELLY_BEAN_MR1);
-//		}
+		
 		if (INSTANCE == null) {
 			INSTANCE = new RemoteMetadataProvider(context);
 		}
