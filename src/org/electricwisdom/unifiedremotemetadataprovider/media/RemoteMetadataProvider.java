@@ -13,15 +13,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.media;
+package org.electricwisdom.unifiedremotemetadataprovider.media;
 
-import com.woodblockwithoutco.remotemetadataprovider.internal.MetadataUpdaterCallback;
-import com.woodblockwithoutco.remotemetadataprovider.internal.RemoteControlDisplay;
-import com.woodblockwithoutco.remotemetadataprovider.media.enums.MediaCommand;
-import com.woodblockwithoutco.remotemetadataprovider.media.listeners.OnArtworkChangeListener;
-import com.woodblockwithoutco.remotemetadataprovider.media.listeners.OnMetadataChangeListener;
-import com.woodblockwithoutco.remotemetadataprovider.media.listeners.OnPlaybackStateChangeListener;
-import com.woodblockwithoutco.remotemetadataprovider.media.listeners.OnRemoteControlFeaturesChangeListener;
+import org.electricwisdom.unifiedremotemetadataprovider.internal.MetadataUpdaterCallback;
+import org.electricwisdom.unifiedremotemetadataprovider.internal.RemoteControlDisplay;
+import org.electricwisdom.unifiedremotemetadataprovider.media.enums.MediaCommand;
+import org.electricwisdom.unifiedremotemetadataprovider.media.listeners.OnArtworkChangeListener;
+import org.electricwisdom.unifiedremotemetadataprovider.media.listeners.OnMetadataChangeListener;
+import org.electricwisdom.unifiedremotemetadataprovider.media.listeners.OnPlaybackStateChangeListener;
+import org.electricwisdom.unifiedremotemetadataprovider.media.listeners.OnRemoteControlFeaturesChangeListener;
 
 import android.app.PendingIntent;
 import android.app.PendingIntent.CanceledException;

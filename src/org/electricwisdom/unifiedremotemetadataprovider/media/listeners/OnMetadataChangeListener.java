@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.media.listeners;
+package org.electricwisdom.unifiedremotemetadataprovider.media.listeners;
 
 public interface OnMetadataChangeListener {
 

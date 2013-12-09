@@ -13,14 +13,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.internal;
+package org.electricwisdom.unifiedremotemetadataprovider.internal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.woodblockwithoutco.remotemetadataprovider.media.RemoteMetadataProvider;
-import com.woodblockwithoutco.remotemetadataprovider.media.enums.PlayState;
-import com.woodblockwithoutco.remotemetadataprovider.media.enums.RemoteControlFeature;
+import org.electricwisdom.unifiedremotemetadataprovider.media.RemoteMetadataProvider;
+import org.electricwisdom.unifiedremotemetadataprovider.media.enums.PlayState;
+import org.electricwisdom.unifiedremotemetadataprovider.media.enums.RemoteControlFeature;
 
 import android.app.PendingIntent;
 import android.graphics.Bitmap;

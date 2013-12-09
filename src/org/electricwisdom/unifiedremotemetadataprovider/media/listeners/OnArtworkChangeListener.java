@@ -13,8 +13,19 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.media.enums;
+package org.electricwisdom.unifiedremotemetadataprovider.media.listeners;
 
-public enum MediaCommand {
-	NEXT, PREVIOUS, PLAY, PAUSE, PLAY_PAUSE, REWIND, FAST_FORWARD, STOP
+import android.graphics.Bitmap;
+
+public interface OnArtworkChangeListener {
+
+	/**
+	 * Called when artwork of current song album was updated.
+	 * 
+	 * @param artwork
+	 *            Bitmap containing current artwork. May be null if it wasn't
+	 *            specified by player. Please note that previous Bitmap is
+	 *            recycled after artwork update!
+	 */
+	public void onArtworkChanged(Bitmap artwork);
 }

@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.internal;
+package org.electricwisdom.unifiedremotemetadataprovider.internal;
 
 import java.lang.ref.WeakReference;
 

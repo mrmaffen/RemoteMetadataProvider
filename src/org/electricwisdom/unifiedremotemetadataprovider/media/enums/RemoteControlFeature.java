@@ -13,8 +13,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.media.enums;
+package org.electricwisdom.unifiedremotemetadataprovider.media.enums;
 
-public enum PlayState {
-	BUFFERING, ERROR, FAST_FORWARDING, PAUSED, PLAYING, REWINDING, SKIPPING_BACKWARDS, SKIPPING_FORWARDS, STOPPED
+public enum RemoteControlFeature {
+	USES_FAST_FORWARD, USES_NEXT, USES_PAUSE, USES_PLAY, USES_PLAY_PAUSE, USES_PREVIOUS, USES_REWIND, USES_STOP
 }

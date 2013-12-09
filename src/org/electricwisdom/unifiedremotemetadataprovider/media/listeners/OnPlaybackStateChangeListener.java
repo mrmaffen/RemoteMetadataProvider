@@ -13,8 +13,19 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.media.enums;
+package org.electricwisdom.unifiedremotemetadataprovider.media.listeners;
 
-public enum RemoteControlFeature {
-	USES_FAST_FORWARD, USES_NEXT, USES_PAUSE, USES_PLAY, USES_PLAY_PAUSE, USES_PREVIOUS, USES_REWIND, USES_STOP
+import org.electricwisdom.unifiedremotemetadataprovider.media.enums.PlayState;
+
+public interface OnPlaybackStateChangeListener {
+
+	/**
+	 * Called when playback state was changed. For example, this method will be
+	 * called with parameter {@link PlayState#PAUSED} when playback is paused.
+	 * 
+	 * @param playbackState
+	 *            Possible values of playbackState are listed in enum class
+	 *            PlayState
+	 */
+	public void onPlaybackStateChanged(PlayState playbackState);
 }

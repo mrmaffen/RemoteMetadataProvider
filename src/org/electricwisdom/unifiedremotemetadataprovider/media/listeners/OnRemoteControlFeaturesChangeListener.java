@@ -13,11 +13,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.woodblockwithoutco.remotemetadataprovider.media.listeners;
+package org.electricwisdom.unifiedremotemetadataprovider.media.listeners;
 
 import java.util.List;
 
-import com.woodblockwithoutco.remotemetadataprovider.media.enums.RemoteControlFeature;
+import org.electricwisdom.unifiedremotemetadataprovider.media.enums.RemoteControlFeature;
 
 public interface OnRemoteControlFeaturesChangeListener {
 
