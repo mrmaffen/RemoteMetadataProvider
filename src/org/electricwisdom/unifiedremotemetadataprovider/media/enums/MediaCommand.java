@@ -16,5 +16,12 @@
 package org.electricwisdom.unifiedremotemetadataprovider.media.enums;
 
 public enum MediaCommand {
-	NEXT, PREVIOUS, PLAY, PAUSE, PLAY_PAUSE, REWIND, FAST_FORWARD, STOP
+	NEXT,
+	PREVIOUS,
+	PLAY,
+	PAUSE,
+	PLAY_PAUSE,
+	REWIND,
+	FAST_FORWARD,
+	STOP
 }
