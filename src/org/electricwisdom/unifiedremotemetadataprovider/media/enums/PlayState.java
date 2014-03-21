@@ -16,13 +16,14 @@
 package org.electricwisdom.unifiedremotemetadataprovider.media.enums;
 
 public enum PlayState {
-	BUFFERING, 
-	ERROR, 
-	FAST_FORWARDING,
+	DUMMY,
+	STOPPED,
 	PAUSED,
 	PLAYING,
+	FAST_FORWARDING,
 	REWINDING,
-	SKIPPING_BACKWARDS,
 	SKIPPING_FORWARDS,
-	STOPPED
+	SKIPPING_BACKWARDS,
+	BUFFERING, 
+	ERROR, 
 }
